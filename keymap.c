@@ -6,10 +6,9 @@ enum sofle_layers {
     _QWERTY,
     _LOWER,
     _RAISE,
-    _LINUX,
+    // _LINUX,
     _NUMPAD,
     _SHIFT,
-    _ADJUST,
 };
 
 enum custom_keycodes {
@@ -17,13 +16,15 @@ enum custom_keycodes {
     KC_LOWER,
     KC_RAISE,
     KC_NUMPAD,
-    KC_ADJUST,
     KC_PRVWD,
     KC_NXTWD,
     KC_LSTRT,
     KC_LEND,
     KC_DLINE,
-    KC_ITILD // Undead tilde
+    KC_ITILD, // Undead tilde
+    KC_ICIRC, // Undead ^
+    KC_IGRV,  // Undead `
+    KC_IACUT  // undead ´
 };
 
 
@@ -46,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_QWERTY] = LAYOUT( \
   KC_MPLY,  NO_1,   NO_2,    NO_3,    NO_4,    NO_5,                                         NO_6,    NO_7,    NO_8,    NO_9,    NO_0,  KC_MNXT, \
-  KC_ESC,   NO_Q,   NO_W,    NO_E,    NO_R,    NO_T,                                         NO_Y,    NO_U,    NO_I,    NO_O,    NO_P,   KC_CAPS, \
+  KC_ESC,   NO_Q,   NO_W,    NO_E,    NO_R,    NO_T,                                         NO_Y,    NO_U,    NO_I,    NO_O,    NO_P,   KC_DEL, \
   LT(_NUMPAD, KC_TAB),   NO_A,   NO_S,    NO_D,    NO_F,    NO_G,                          NO_H,    NO_J,    NO_K,    NO_L, NO_SCLN,  NO_QUOT, \
   LM(_SHIFT, MOD_LSFT),  NO_Z,   NO_X,    NO_C,    NO_V,    NO_B, KC_MUTE,                       XXXXXXX, NO_N,    NO_M, NO_COMM,  NO_DOT, NO_SLSH,  LM(_SHIFT, MOD_RSFT), \
                  KC_LCTRL, KC_LALT, KC_LGUI,   LT(_LOWER, KC_DEL), KC_SPC,        KC_BSPC, LT(_RAISE, KC_ENT), KC_RAISE, KC_RALT, KC_RGUI \
@@ -67,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT( \
   _______     , LALT(NO_1), LALT(NO_2), LALT(NO_3), LALT(NO_4), LALT(NO_5),                       LALT(NO_6), LALT(NO_7), LALT(NO_8), LALT(NO_9), LALT(NO_0), _______,\
-  NO_TILD    , NO_GRV       , KC_ITILD , NO_AMPR   , NO_PIPE   , NO_HASH   ,                       NO_CIRC   , NO_ASTR, NO_EQL, KC_NO,   KC_NO,   _______, \
+  KC_IACUT   , KC_IGRV       , KC_ITILD , NO_AMPR   , NO_PIPE   , NO_HASH   ,                       KC_ICIRC   , NO_ASTR, NO_EQL, KC_NO,   KC_NO,   _______, \
   LALT(KC_ESC), NO_LCBR   , NO_RCBR   , NO_LBRC   , NO_RBRC   , NO_EXLM   ,                       NO_UNDS   , NO_MINS, NO_PLUS, NO_LPRN, NO_RPRN, _______, \
   _______     , KC_NO     , NO_MINS   , NO_DLR    , NO_PERC   , NO_AT     , _______,       _______, NO_LABK  ,   NO_RABK,   NO_SCLN, NO_COLN, NO_BSLS, _______, \
                                         _______, _______, _______, _______, _______,       LCTL(KC_BSPC), _______, _______, _______, _______\
@@ -123,13 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
  *            `----------------------------------'           '------''---------------------------'
  */
-  [_ADJUST] = LAYOUT( \
-  XXXXXXX , XXXXXXX,  XXXXXXX ,  XXXXXXX , XXXXXXX, XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  RESET  , XXXXXXX,KC_QWERTY,XXXXXXX,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX , XXXXXXX,CG_TOGG, XXXXXXX,    XXXXXXX,  XXXXXXX,                     XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX, \
-  XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,  XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, \
-                   _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______ \
-  )
+
 };
 
 #ifdef OLED_DRIVER_ENABLE
@@ -181,11 +176,7 @@ static void print_status_narrow(void) {
         case _SHIFT:
             oled_write_P(PSTR("Shift"), false);
             break;
-        case _ADJUST:
-            oled_write_P(PSTR("Adj\n"), false);
-            break;
         default:
-
             oled_write_ln_P(PSTR("Undef"), false);
     }
     oled_write_P(PSTR("\n\n"), false);
@@ -220,19 +211,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_LOWER:
             if (record->event.pressed) {
                 layer_on(_LOWER);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+                // update_tri_layer(_LOWER, _RAISE );
             } else {
                 layer_off(_LOWER);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+                // update_tri_layer(_LOWER, _RAISE );
             }
             return false;
         case KC_RAISE:
             if (record->event.pressed) {
                 layer_on(_RAISE);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+                // update_tri_layer(_LOWER, _RAISE);
             } else {
                 layer_off(_RAISE);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+                // update_tri_layer(_LOWER, _RAISE);
             }
             return false;
         case KC_NUMPAD:
@@ -240,13 +231,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_on(_NUMPAD);
             } else {
                 layer_off(_NUMPAD);
-            }
-            return false;
-        case KC_ADJUST:
-            if (record->event.pressed) {
-                layer_on(_ADJUST);
-            } else {
-                layer_off(_ADJUST);
             }
             return false;
         case KC_PRVWD:
@@ -333,18 +317,55 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case KC_ITILD:
-            // prints out ~ instantly not as a dead key
+            // prints out ^ instantly not as a dead key
             if (record->event.pressed) {
-                // register_mods(mod_config(KC_RIGHT_ALT));
                 register_code(KC_ALGR);
                 register_code(KC_RBRC);
             } else {
                 unregister_code(KC_RBRC);
                 unregister_code(KC_ALGR);
-                // unregister_mods(mod_config(KC_RIGHT_ALT));
                 register_code(KC_SPC);
                 unregister_code(KC_SPC);
-              }
+            }
+            break;
+        case KC_ICIRC:
+            // prints out ~ instantly not as a dead key
+            if (record->event.pressed) {
+                register_code(KC_RSFT);
+                register_code(KC_RBRC);
+            } else {
+                unregister_code(KC_RBRC);
+                unregister_code(KC_RSFT);
+                register_code(KC_SPC);
+                unregister_code(KC_SPC);
+            }
+            break;
+        case KC_IGRV:
+            // prints out ` instantly not as a dead key
+            if (record->event.pressed) {
+                register_code(KC_RSFT);
+                register_code(KC_EQL);
+            } else {
+                unregister_code(KC_EQL);
+                unregister_code(KC_RSFT);
+                register_code(KC_SPC);
+                unregister_code(KC_SPC);
+            }
+            break;
+        case KC_IACUT:
+            // prints out ´ instantly not as a dead key
+            if (record->event.pressed) {
+                register_code(KC_ALGR);
+                register_code(KC_EQL);
+            } else {
+                unregister_code(KC_EQL);
+                unregister_code(KC_ALGR);
+                // Have to run again to not be dead space does not  work on this key
+                register_code(KC_ALGR);
+                register_code(KC_EQL);
+                unregister_code(KC_EQL);
+                unregister_code(KC_ALGR);
+            }
             break;
         case KC_COPY:
             if (record->event.pressed) {
