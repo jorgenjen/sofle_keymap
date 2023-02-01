@@ -49,8 +49,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_MPLY,  NO_1,   NO_2,    NO_3,    NO_4,    NO_5,                                         NO_6,    NO_7,    NO_8,    NO_9,    NO_0,  KC_MNXT, \
   KC_ESC,   NO_Q,   NO_W,    NO_E,    NO_R,    NO_T,                                         NO_Y,    NO_U,    NO_I,    NO_O,    NO_P,   KC_DEL, \
   LT(_NUMPAD, KC_TAB),   NO_A,   NO_S,    NO_D,    NO_F,    NO_G,                          NO_H,    NO_J,    NO_K,    NO_L, NO_SCLN,  NO_QUOT, \
-  LM(_SHIFT, MOD_LSFT),  NO_Z,   NO_X,    NO_C,    NO_V,    NO_B, KC_MUTE,                       XXXXXXX, NO_N,    NO_M, NO_COMM,  NO_DOT, NO_SLSH,  LM(_SHIFT, MOD_RSFT), \
-                 KC_LCTL, KC_LGUI, KC_LALT,   LT(_LOWER, KC_ESC), KC_SPC,        KC_BSPC, LT(_RAISE, KC_ENT), KC_RAISE, KC_RALT, KC_LALT \
+  LM(_SHIFT, MOD_LSFT),  NO_Z,   NO_X,    NO_C,    NO_V,    NO_B, KC_MUTE,                       XXXXXXX, NO_N,    NO_M, NO_COMM,  NO_DOT, NO_SLSH,  LM(_SHIFT, MOD_LSFT), \
+                 KC_LCTL, KC_LGUI, KC_LALT,   LT(_LOWER, KC_ESC), KC_SPC,        KC_BSPC, LT(_RAISE, KC_ENT), KC_RAISE, KC_RGUI, KC_LALT \
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
